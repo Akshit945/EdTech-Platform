@@ -89,6 +89,11 @@ function LoginForm() {
       >
         Sign In
       </button>
+      <div className=" text-white">
+          Email Address for student: student@gmail.com<br />
+          Email Address for instructor: instructor@gmail.com<br/>
+          Password: 12345
+      </div>
     </form>
   )
 }
