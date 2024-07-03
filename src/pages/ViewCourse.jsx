@@ -23,6 +23,7 @@ export default function ViewCourse() {
   const { user } = useSelector((state) => state.profile)
   const navigate=useNavigate()
   const [isEnroll, setIsEnroll] = useState(false)
+  //TODO: need to update coursre in user data when user is enrolled
   useEffect(() => {
     const enrolledCourse = user.courses;
     // console.log(enrolledCourse);

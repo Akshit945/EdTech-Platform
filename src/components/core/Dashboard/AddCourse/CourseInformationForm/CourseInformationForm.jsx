@@ -260,7 +260,7 @@ export default function CourseInformationForm() {
         setValue={setValue}
         getValues={getValues}
       />
-      {/* Course Thumbnail Image//TODO */}
+      
       <Upload
         name="courseImage"
         label="Course Thumbnail"
