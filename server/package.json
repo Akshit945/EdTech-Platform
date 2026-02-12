@@ -1,14 +1,14 @@
 {
-	"name": "studynotion-backend",
+	"name": "skillsync-backend",
 	"version": "1.0.0",
-	"description": "studynotion-backend",
+	"description": "skillsync-backend",
 	"main": "index.js",
 	"scripts": {
 		"start": "node index.js",
 		"dev": "nodemon index.js"
 	},
 	"keywords": [
-		"studynotion-backend"
+		"skillsync-backend"
 	],
 	"author": "Akshit Gupta",
 	"license": "ISC",

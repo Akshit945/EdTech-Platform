@@ -1,7 +1,7 @@
 import { toast } from "react-hot-toast"
 
-import rzpLogo from "../../assets/Logo/Logo-Full-Dark.png"
-// import rzpLogo from "../../assets/Logo/"
+// import rzpLogo from "../../assets/Logo/Logo-Full-Dark.png"
+// import rzpLogo from "../../assets/Logo/Logo-Full-Dark.png"
 import { resetCart } from "../../slices/cartSlice"
 import { setPaymentLoading } from "../../slices/courseSlice"
 import { apiConnector } from "../apiconnector"
@@ -67,14 +67,14 @@ export async function BuyCourse(
 
     // Opening the Razorpay SDK
     const options = {
-    //   key: process.env.RAZORPAY_KEY,
-    key: process.env.REACT_APP_RAZORPAY_KEY,
+      //   key: process.env.RAZORPAY_KEY,
+      key: process.env.REACT_APP_RAZORPAY_KEY,
       currency: orderResponse.data.data.currency,
       amount: `${orderResponse.data.data.amount}`,
       order_id: orderResponse.data.data.id,
-      name: "StudyNotion",
+      name: "SkillSync",
       description: "Thank you for Purchasing the Course.",
-      image: rzpLogo,
+      // image: rzpLogo,
       prefill: {
         name: `${user_details.firstName} ${user_details.lastName}`,
         email: user_details.email,
@@ -93,7 +93,7 @@ export async function BuyCourse(
     })
   } catch (error) {
     console.log("PAYMENT API ERROR............", error)
-    toast.error( error?.message);
+    toast.error(error?.message);
     toast.error("Unable to process payment")
   }
   toast.dismiss(toastId)
