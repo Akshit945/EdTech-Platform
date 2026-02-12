@@ -188,9 +188,51 @@ details>summary::-webkit-details-marker {
 }
 
 /* For conditional coloring of icons in dashboard sidebar */
-.active-icon {
-  fill: #00FF9D !important;
-  color: #00FF9D !important;
+/* Neon Aurora Background */
+.aurora-bg {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 50% 50%, #00FF9D33 0%, transparent 50%),
+    radial-gradient(circle at 100% 0%, #00F0FF33 0%, transparent 50%),
+    radial-gradient(circle at 0% 100%, #7B1FA233 0%, transparent 50%);
+  filter: blur(60px);
+  animation: aurora-spin 20s linear infinite;
+  z-index: 0;
+  pointer-events: none;
+}
+
+@keyframes aurora-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Glassmorphism Card */
+.glass-card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.glass-card:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(0, 255, 157, 0.3);
+  box-shadow: 0 0 20px rgba(0, 255, 157, 0.1);
+}
+
+/* Neon Text Gradient */
+.text-neon-gradient {
+  background: linear-gradient(to right, #00FF9D, #00F0FF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .inactive-icon {
