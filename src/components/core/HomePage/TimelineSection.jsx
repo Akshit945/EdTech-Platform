@@ -6,27 +6,27 @@ import Logo3 from "../../../assets/TimeLineLogo/Logo3.svg";
 import Logo4 from "../../../assets/TimeLineLogo/Logo4.svg";
 
 const TimeLine = [
-    {
-      Logo: Logo1,
-      Heading: "Leadership",
-      Description: "Fully committed to the success company",
-    },
-    {
-      Logo: Logo2,
-      Heading: "Responsibility",
-      Description: "Students will always be our top priority",
-    },
-    {
-      Logo: Logo3,
-      Heading: "Flexibility",
-      Description: "The ability to switch is an important skills",
-    },
-    {
-      Logo: Logo4,
-      Heading: "Solve the problem",
-      Description: "Code your way to a solution",
-    },
-  ];
+  {
+    Logo: Logo1,
+    Heading: "Leadership",
+    Description: "Fully committed to the success company",
+  },
+  {
+    Logo: Logo2,
+    Heading: "Responsibility",
+    Description: "Students will always be our top priority",
+  },
+  {
+    Logo: Logo3,
+    Heading: "Flexibility",
+    Description: "The ability to switch is an important skills",
+  },
+  {
+    Logo: Logo4,
+    Heading: "Solve the problem",
+    Description: "Code your way to a solution",
+  },
+];
 
 
 const TimelineSection = () => {
@@ -47,9 +47,8 @@ const TimelineSection = () => {
                   </div>
                 </div>
                 <div
-                  className={`hidden ${
-                    TimeLine.length - 1 === i ? "hidden" : "lg:block"
-                  }  h-14 border-dotted border-r border-richblack-100 bg-richblack-400/0 w-[26px]`}
+                  className={`hidden ${TimeLine.length - 1 === i ? "hidden" : "lg:block"
+                    }  h-14 border-dotted border-r border-richblack-100 bg-richblack-400/0 w-[26px]`}
                 ></div>
               </div>
             );
@@ -77,7 +76,7 @@ const TimelineSection = () => {
           <img
             src={TimeLineImage}
             alt="timelineImage"
-            className="shadow-white shadow-[20px_20px_0px_0px] object-cover h-[400px] lg:h-fit"
+            className="shadow-blue-200 shadow-[20px_20px_0px_0px] object-cover h-[400px] lg:h-fit"
           />
         </div>
       </div>

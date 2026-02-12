@@ -4,7 +4,7 @@ import { BsChevronDown } from "react-icons/bs"
 import { useSelector } from "react-redux"
 import { Link, matchPath, useLocation } from "react-router-dom"
 
-// import logo from "../../assets/Logo/Logo-Full-Light.png"
+// import logo from "../../assets/Logo/Logo-Small-Light.png"
 import { NavbarLinks } from "../../data/navbar-links"
 // import { apiConnector } from "../../services/apiConnector"
 import { apiConnector } from "../../services/apiconnector"
@@ -48,8 +48,10 @@ function Navbar() {
       <div className="flex w-11/12 max-w-maxContent items-center justify-between">
         {/* Logo */}
         <Link to="/">
-          {/* <img className=" logoNavbar"
-          src={logo} alt="Logo" width={160} height={32} loading="lazy" /> */}
+          <div className="flex items-center gap-x-2">
+            {/* <img src={logo} alt="Logo" width={30} height={30} loading="lazy" /> */}
+            <p className="text-xl font-bold text-richblack-5">SkillSync</p>
+          </div>
         </Link>
 
         {/* Navigation links */}
@@ -61,8 +63,8 @@ function Navbar() {
                   <>
                     <div
                       className={`group relative flex cursor-pointer items-center gap-1 ${matchRoute("/catalog/:catalogName")
-                          ? "text-yellow-25"
-                          : "text-richblack-25"
+                        ? "text-yellow-25"
+                        : "text-richblack-25"
                         }`}
                     >
                       <p>{link.title}</p>
@@ -94,8 +96,8 @@ function Navbar() {
                   <Link to={link?.path}>
                     <p
                       className={`${matchRoute(link?.path)
-                          ? "text-yellow-25"
-                          : "text-richblack-25"
+                        ? "text-yellow-25"
+                        : "text-richblack-25"
                         }`}
                     >
                       {link.title}
