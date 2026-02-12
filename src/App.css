@@ -299,8 +299,25 @@ details>summary::-webkit-details-marker {
   }
 }
 
-@media (max-width: 562px) {
-  .logoNavbar {
-    display: none;
-  }
+.logoNavbar {
+  display: none;
+}
+
+
+/* Custom Scrollbar for ChatBot */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #161D29;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #2C333F;
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #00FF9D;
 }

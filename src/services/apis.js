@@ -71,3 +71,8 @@ export const settingsEndpoints = {
   CHANGE_PASSWORD_API: BASE_URL + "/auth/changepassword",
   DELETE_PROFILE_API: BASE_URL + "/profile/deleteProfile",
 }
+
+// AI CHATBOT API
+export const aiEndpoints = {
+  CHAT_API: BASE_URL + "/ai/chat",
+}

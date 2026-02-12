@@ -1,7 +1,8 @@
 import "./App.css";
-import {Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { ACCOUNT_TYPE } from "./utils/constants";
 import { useSelector } from "react-redux";
+import ChatBot from "./components/common/ChatBot";
 
 
 import Navbar from "./components/common/Navbar"
@@ -44,15 +45,15 @@ function App() {
   const { user } = useSelector((state) => state.profile)
 
   return (
-   <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
-    <Navbar/>
-    <Routes>
+    <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
+      <Navbar />
+      <Routes>
 
-      <Route path="/" element={<Home/>} />
-      <Route path="/catalog/:catalogName" element={<Catalog/>} />
-      <Route path="/courses/:courseId" element={<CourseDetails/>} />
+        <Route path="/" element={<Home />} />
+        <Route path="/catalog/:catalogName" element={<Catalog />} />
+        <Route path="/courses/:courseId" element={<CourseDetails />} />
 
-      <Route
+        <Route
           path="signup"
           element={
             <OpenRoute>
@@ -60,7 +61,7 @@ function App() {
             </OpenRoute>
           }
         />
-    <Route
+        <Route
           path="login"
           element={
             <OpenRoute>
@@ -68,7 +69,7 @@ function App() {
             </OpenRoute>
           }
         />
-    <Route
+        <Route
           path="forgot-password"
           element={
             <OpenRoute>
@@ -76,7 +77,7 @@ function App() {
             </OpenRoute>
           }
         />
-    <Route
+        <Route
           path="update-password/:id"
           element={
             <OpenRoute>
@@ -84,7 +85,7 @@ function App() {
             </OpenRoute>
           }
         />
-    <Route
+        <Route
           path="verify-email"
           element={
             <OpenRoute>
@@ -92,7 +93,7 @@ function App() {
             </OpenRoute>
           }
         />
-    <Route
+        <Route
           path="about"
           element={
             <OpenRoute>
@@ -100,38 +101,38 @@ function App() {
             </OpenRoute>
           }
         />
-  
-    <Route
+
+        <Route
           path="contact"
           element={
-             
-              <Contact/>
-            
+
+            <Contact />
+
           }
         />
 
-    {/* //dashboard route  */}{/*outline is used  */}
-    <Route
+        {/* //dashboard route  */}{/*outline is used  */}
+        <Route
           // path="dashboard" //no need to add
           element={
-             <PrivateRoute>
-                <Dashboard/>
-             </PrivateRoute>
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
           }
-          >
-              <Route
-              path="dashboard/my-profile"
-              element={<MyProfile/>}
-            />
-              <Route
-              path="dashboard/settings"
-              element={<Settings/>}
-            />
-         
-            
-              
+        >
+          <Route
+            path="dashboard/my-profile"
+            element={<MyProfile />}
+          />
+          <Route
+            path="dashboard/settings"
+            element={<Settings />}
+          />
 
-            {user?.accountType === ACCOUNT_TYPE.STUDENT && (
+
+
+
+          {user?.accountType === ACCOUNT_TYPE.STUDENT && (
             <>
               <Route
                 path="dashboard/enrolled-courses"
@@ -141,7 +142,7 @@ function App() {
             </>
           )}
 
-            {user?.accountType === ACCOUNT_TYPE.INSTRUCTOR && (
+          {user?.accountType === ACCOUNT_TYPE.INSTRUCTOR && (
             <>
               <Route
                 path="dashboard/add-course"
@@ -153,12 +154,12 @@ function App() {
             </>
           )}
 
-    </Route>
-         
-      
-    
-      {/* For the watching course lectures */}
-            <Route
+        </Route>
+
+
+
+        {/* For the watching course lectures */}
+        <Route
           element={
             <PrivateRoute>
               <ViewCourse />
@@ -178,17 +179,17 @@ function App() {
 
 
 
-    <Route
+        <Route
           path="*"
           element={
-            <Error/>//Error wala page
+            <Error />//Error wala page
           }
         />
 
- 
-    </Routes>
 
-   </div>
+      </Routes>
+      <ChatBot />
+    </div>
   );
 }
 
