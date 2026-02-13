@@ -47,9 +47,7 @@ const ChatBot = () => {
         setLoading(true)
 
         try {
-            // Send conversation history, excluding initial greeting if it's the default one
-            const apiMessages = newMessages.filter(m => m.content !== "Hi! I'm SkillSync AI. How can I help you today?")
-
+            const apiMessages = newMessages.slice(-50);
             const response = await apiConnector("POST", aiEndpoints.CHAT_API, {
                 messages: apiMessages
             })
