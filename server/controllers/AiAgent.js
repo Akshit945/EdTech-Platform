@@ -14,7 +14,6 @@ const getAllCoursesLogic = async () => {
                 instructor: true,
             }
         ).populate("instructor", "firstName lastName")
-        console.log("Courses found:", courses ? courses.length : 0);
         return JSON.stringify(courses)
     } catch (error) {
         console.error("Error fetching courses:", error)
@@ -70,7 +69,6 @@ const mathGuardrail = {
 
         const textCheck = lastMessage.content || JSON.stringify(lastMessage)
 
-        console.log(`Guardrail Checking Input: ${textCheck}`)
 
         try {
             const result = await run(mathCheckAgent, textCheck)
@@ -86,20 +84,30 @@ const mathGuardrail = {
         }
     },
 }
-
 // Define Main Agent
 const agent = new Agent({
     name: "SkillSync Agent",
     model: "gpt-4o-mini",
     instructions: `You are SkillSync AI, a helpful and knowledgeable assistant for the SkillSync EdTech platform.
       Your role is to assist users in finding courses, getting support, and navigating the platform.
-      
+    
       Guidelines:
       - Be polite, professional, and concise.
       - Use the available tools to fetch real-time data about courses and contact info.
       - If you don't know the answer and the tools don't help, admit it gracefully.
       - Do not make up course details. Always check the database using tools.
-      - Current platform name: SkillSync.`,
+      - Current platform name: SkillSync.
+      - Current platform URL: https://akshit945-edtech.vercel.app/
+      -Dont do any other task other that be agent of SkillSync
+      
+      Rules:
+        - Do NOT engage in general conversation
+        - Do NOT answer math/homework questions
+        - Do NOT act like ChatGPT
+        - Stay focused on SkillSync platform only
+      `,
+
+
     tools: [getAllCoursesTool, getContactDetailsTool],
     inputGuardrails: [mathGuardrail],
 })
@@ -127,7 +135,6 @@ exports.chatAgent = async (req, res) => {
 
     } catch (error) {
         if (error instanceof InputGuardrailTripwireTriggered) {
-            console.log("Math guardrail triggered")
             return res.status(200).json({
                 success: true,
                 message: { role: "assistant", content: "I cannot assist with math homework questions." }
