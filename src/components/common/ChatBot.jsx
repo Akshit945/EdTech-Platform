@@ -116,7 +116,20 @@ const ChatBot = () => {
                             : "bg-gray-100 text-richblack-900 self-start rounded-bl-none border border-gray-200"
                             }`}
                     >
-                        <ReactMarkdown>{msg.content}</ReactMarkdown>
+                        <ReactMarkdown
+                            components={{
+                                a: ({ node, ...props }) => (
+                                    <a
+                                        {...props}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-blue-600 underline font-bold hover:text-blue-800"
+                                    />
+                                ),
+                            }}
+                        >
+                            {msg.content}
+                        </ReactMarkdown>
                     </div>
                 ))}
                 {loading && (

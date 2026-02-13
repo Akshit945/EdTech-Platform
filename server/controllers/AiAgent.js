@@ -1,22 +1,34 @@
 const { Agent, run, tool, InputGuardrailTripwireTriggered } = require("@openai/agents")
 const { z } = require("zod")
 const Course = require("../models/Course")
+const Category = require("../models/Category")
+const User = require("../models/User")
 
 // Tool Implementation Functions
 const getAllCoursesLogic = async () => {
     try {
-        const courses = await Course.find(
-            { status: "Published" },
-            {
-                courseName: true,
-                price: true,
-                courseDescription: true,
-                instructor: true,
-            }
-        ).populate("instructor", "firstName lastName")
-        return JSON.stringify(courses)
+        const courses = await Course.find({ status: "Published" }, {
+            courseName: true,
+            price: true,
+            courseDescription: true,
+            instructor: true,
+            category: true,
+            _id: true,
+        }).populate("instructor", "firstName lastName").populate("category", "name");
+
+        // Transform for better readability by the agent
+        const simplifiedCourses = courses.map(course => ({
+            id: course._id,
+            name: course.courseName,
+            price: course.price,
+            description: course.courseDescription,
+            instructor: course.instructor ? `${course.instructor.firstName} ${course.instructor.lastName}` : "Unknown",
+            category: course.category ? course.category.name : "Uncategorized",
+            link: `/courses/${course._id}`
+        }))
+
+        return JSON.stringify(simplifiedCourses)
     } catch (error) {
-        console.error("Error fetching courses:", error)
         return "Error fetching courses."
     }
 }
@@ -27,22 +39,60 @@ const getContactDetailsLogic = () => {
         phone: "+1 (555) 123-4567",
         address: "123 Innovation Drive, Tech City, TC 90001",
         hours: "Mon-Fri 9am-6pm EST",
+        contactPage: "/contact",
+        aboutPage: "/about"
+    })
+}
+
+const getAllCategoriesLogic = async () => {
+    try {
+        const categories = await Category.find({}, { name: true, description: true })
+        return JSON.stringify(categories)
+    } catch (error) {
+        return "Error fetching categories."
+    }
+}
+
+const getPageRoutesLogic = () => {
+    return JSON.stringify({
+        home: "/",
+        about: "/about",
+        contact: "/contact",
+        login: "/login",
+        signup: "/signup",
+        catalog: "/catalog/:catalogName (replace :catalogName with category name)",
+        dashboard: "/dashboard/my-profile",
+        courses: "/courses/:courseId (replace :courseId with actual course ID)"
     })
 }
 
 // Define Tools
 const getAllCoursesTool = tool({
     name: "getAllCourses",
-    description: "Get a list of all available published courses with their prices and instructor names.",
+    description: "Get a list of all available published courses with their prices, instructor names, categories, and direct links.",
     parameters: z.object({}),
     execute: getAllCoursesLogic,
 })
 
 const getContactDetailsTool = tool({
     name: "getContactDetails",
-    description: "Get the contact details for SkillSync support including email and address.",
+    description: "Get the contact details for SkillSync support including email, address, and operation hours.",
     parameters: z.object({}),
     execute: getContactDetailsLogic,
+})
+
+const getAllCategoriesTool = tool({
+    name: "getAllCategories",
+    description: "Get a list of all course categories/types available on the platform.",
+    parameters: z.object({}),
+    execute: getAllCategoriesLogic,
+})
+
+const getPageRoutesTool = tool({
+    name: "getPageRoutes",
+    description: "Get the internal routes/URLs for various pages like About Us, Contact, Login, etc. Use this to guide users where to go.",
+    parameters: z.object({}),
+    execute: getPageRoutesLogic,
 })
 
 // Define Math Guardrail Agent
@@ -72,26 +122,29 @@ const mathGuardrail = {
                 tripwireTriggered: result.finalOutput.isMathHomework,
             }
         } catch (err) {
-            console.error("Guardrail Agent Error:", err)
             return { tripwireTriggered: false }
         }
     },
 }
+
 // Define Main Agent
 const agent = new Agent({
     name: "SkillSync Agent",
-    model: "gpt-4o-mini",
     instructions: `You are SkillSync AI, a helpful and knowledgeable assistant for the SkillSync EdTech platform.
-      Your role is to assist users in finding courses, getting support, and navigating the platform.
+      Your role is to assist users in finding courses, getting support, navigating the platform, and understanding what we offer.
     
       Guidelines:
       - Be polite, professional, and concise.
-      - Use the available tools to fetch real-time data about courses and contact info.
+      - Use the available tools to fetch real-time data about courses, categories, contact info, and page routes.
+      - If a user asks how to buy a course, use 'getAllCourses' to find relevant courses and provide the link (e.g., /courses/123).
+      - If a user asks about course types, use 'getAllCategories'.
+      - If a user asks where to find something (About Us, Contact), use 'getPageRoutes' or 'getContactDetails'.
       - If you don't know the answer and the tools don't help, admit it gracefully.
       - Do not make up course details. Always check the database using tools.
       - Current platform name: SkillSync.
-      - Current platform URL: https://akshit945-edtech.vercel.app/
-      -Dont do any other task other that be agent of SkillSync
+      - Current platform URL: https://akshit945-edtech.vercel.app/ (Base URL)
+      - Provide relative paths for internal navigation (e.g., /about, /contact).
+      -Make sure links are highlighted using markdown
       
       Rules:
         - Do NOT engage in general conversation
@@ -99,7 +152,7 @@ const agent = new Agent({
         - Stay focused on SkillSync platform only
       `,
     inputGuardrails: [mathGuardrail],
-    tools: [getAllCoursesTool, getContactDetailsTool],
+    tools: [getAllCoursesTool, getContactDetailsTool, getAllCategoriesTool, getPageRoutesTool],
 })
 
 exports.chatAgent = async (req, res) => {
